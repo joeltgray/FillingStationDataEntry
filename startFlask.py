@@ -151,7 +151,7 @@ def index(results={}):
             #CREATE FUEL INSERT STRING
             add_fuel = ("INSERT INTO fuel "
                         "(idstationname, petrolprice, dieselprice, keroprice, currency, dateadded) "
-                        "VALUES (%(idstationName)s, %(petrol)s, %(diesel)s, %(kero)s, %(currency)s, %(date)s,);")
+                        "VALUES (%(idstationName)s, %(petrol)s, %(diesel)s, %(kero)s, %(currency)s, %(date)s);")
             
             #TELL MYSQL TO USE PICKAPUMP_APP DATABASE
             cursor.execute("USE pickapump")
