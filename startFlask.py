@@ -254,9 +254,9 @@ def station(results={}):
 
 
 def send_tweet(fuel_data):
-    if fuel_data['currency'] == sterling:
+    if fuel_data['currency'] == 'sterling':
         currency = 'p'
-    elif fuel_data['currency'] == euro:
+    elif fuel_data['currency'] == 'euro':
         currency = 'c'
     else:
         currency = ''
