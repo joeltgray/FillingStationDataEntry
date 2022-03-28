@@ -2,7 +2,14 @@ from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector
 from mysql.connector import errorcode
 from datetime import datetime
+import tweepy
 import config
+
+bearer_token=config.BEARER_TOKEN
+access_token=config.ACCESS_KEY
+access_token_secret=config.ACCESS_SECRET
+consumer_key=config.COMSUMER_KEY
+consumer_secret=config.CONSUMER_SECRET
 
 currentCoords = None
 middle = ''
@@ -29,7 +36,6 @@ def index(results={}):
             cursor = conn.cursor()
             #TELL MYSQL TO USE PICKAPUMP_APP DATABASE
             cursor.execute("USE pickapump_app")
-            #USE COORDS TO CHECK IF STATION EXISTS
             cursor.execute("SELECT * FROM stations")
             data = cursor.fetchall()
 
@@ -161,6 +167,8 @@ def index(results={}):
             conn.commit()
             cursor.close()  
             conn.close()
+
+            send_tweet(fuel_data)
         
 
     except mysql.connector.Error as err:
@@ -247,3 +255,59 @@ def station(results={}):
     
 if __name__ == '__main__':
    app.run(debug=True, host='0.0.0.0', port=5247)
+
+def send_tweet(fuel_data):
+    if fuel_data['currency'] == sterling:
+        currency = 'p'
+    elif fuel_data['currency'] == euro:
+        currency = 'c'
+    else:
+        currency = ''
+
+    station_data = {
+    'stationName': None,
+    'address': None,
+    'postcode': None,
+    'country': None,
+    'coords': None,
+    'telephone': None,
+    }
+    
+    try:
+        #CREATE DATABASE CONNECTION DEVELOPER
+        # conn = mysql.connector.connect(user='root', password='97551',
+        #                             host='localhost',
+        #                             database='pickapump')
+
+        #CREATE DATABASE CONNECTION PRODUCTION
+        conn = mysql.connector.connect(user=config.username, password=config.password,
+                                    host='localhost',
+                                    database='pickapump_app')
+
+        #CHECK DATABASE CONNECTION
+        if conn.is_connected() == True:
+            print("Database Connection Made!")
+            #CREATE MAGICAL CURSOR OBJECT
+            cursor = conn.cursor()#TELL MYSQL TO USE PICKAPUMP_APP DATABASE
+            cursor.execute("USE pickapump_app")
+            cursor.execute("SELECT * FROM stations WHERE idstationname={}".format(fuel_data['idstationName']))
+            data = cursor.fetchall()
+            print(data)
+            
+            #CLOSE CONNECTIONS
+            conn.commit()
+            cursor.close()  
+            conn.close()
+        
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
+        else:
+            print(err)
+    else:
+        conn.close()
+
+    #client = tweepy.Client(bearer_token=bearer_token, access_token=access_token, access_token_secret=access_token_secret, consumer_key=consumer_key, consumer_secret=consumer_secret)
+    #client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}{}{}\nTel:{}\n\nShow on Map:{}#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(fuel_data['petrol'],currency,fuel_data['diesel'],currency,))
