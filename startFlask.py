@@ -186,6 +186,7 @@ def station(results={}):
     results.update({"postCode":request.form["postCode"]}) 
     results.update({"country":request.form["country"]})  
     results.update({"coords":request.form["coords"]}) 
+    results.update({"telephone":request.form["telephone"]}) 
 
     station_data = {
     'stationName': results["stationName"],
@@ -193,6 +194,7 @@ def station(results={}):
     'postcode': results["postCode"],
     'country': results["country"],
     'coords': results["coords"],
+    'telephone': results["telephone"],
     }
  
     try:
@@ -208,8 +210,8 @@ def station(results={}):
             cursor = conn.cursor()
             #CREATE STATION INSERT STRING
             add_station = ("INSERT INTO stationname "
-               "(stationName, address, postcode, country, coords) "
-               "VALUES (%(stationName)s, %(address)s, %(postcode)s, %(country)s, %(coords)s);")
+               "(stationName, address, postcode, country, coords, telephone) "
+               "VALUES (%(stationName)s, %(address)s, %(postcode)s, %(country)s, %(coords)s, %(telephone)s);")
             #TELL MYSQL TO USE PICKAPUMP_APP DATABASE
             cursor.execute("USE pickapump")
             #ADD STATION DATA
