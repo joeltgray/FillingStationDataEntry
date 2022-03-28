@@ -1,0 +1,10 @@
+Installing PapTwitter
+
+Must have: 
+Python 3.10.2 installed
+MySql database installed
+
+Run: python -m pip install -r  ./requirements.txt
+to ensure you have all requirements for this project
+
+Also you will need to edit your mySQL log on details and your Twitter Developer keys to be your own
