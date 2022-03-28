@@ -154,7 +154,7 @@ def index(results={}):
                         "VALUES (%(idstationName)s, %(petrol)s, %(diesel)s, %(kero)s, %(currency)s, %(date)s);")
             
             #TELL MYSQL TO USE PICKAPUMP_APP DATABASE
-            cursor.execute("USE pickapump")
+            cursor.execute("USE pickapump_app")
             cursor.execute(add_fuel, fuel_data)
 
             #CLOSE CONNECTIONS
