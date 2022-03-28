@@ -290,7 +290,6 @@ def send_tweet(fuel_data):
             cursor.execute("USE pickapump_app")
             cursor.execute("SELECT * FROM stations WHERE idstationname={}".format(fuel_data['idstationName']))
             data = cursor.fetchall()
-            print(data)
             station_data['idstationname']=data[0][0]
             station_data['stationName']=data[0][1]
             station_data['address']=data[0][2]
@@ -316,8 +315,9 @@ def send_tweet(fuel_data):
     else:
         conn.close()
 
-    #client = tweepy.Client(bearer_token=bearer_token, access_token=access_token, access_token_secret=access_token_secret, consumer_key=consumer_key, consumer_secret=consumer_secret)
-    client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}{}{}\nTel:{}\n\nShow on Map:{}#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(fuel_data['petrol'],currency,fuel_data['diesel'],currency,))
+    client = tweepy.Client(bearer_token=bearer_token, access_token=access_token, access_token_secret=access_token_secret, consumer_key=consumer_key, consumer_secret=consumer_secret)
+    response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}{}{}\nTel:{}\n\nShow on Map:{}#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(fuel_data['petrol'],currency,fuel_data['diesel'],currency,station_data['stationName'],station_data['address'],station_data['postcode'],station_data['country'],station_data['telephone'],))
+    print(response)
 
 if __name__ == '__main__':
    app.run(debug=True, host='0.0.0.0', port=5247)
