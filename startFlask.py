@@ -2,8 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector
 from mysql.connector import errorcode
 from datetime import datetime
-from config import username, password
-
+import config
 
 currentCoords = None
 middle = ''
@@ -240,4 +239,4 @@ def station(results={}):
 
     
 if __name__ == '__main__':
-   app.run(debug=True)
+   app.run(debug=True, host='0.0.0.0', port=5247)
