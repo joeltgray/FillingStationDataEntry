@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector
 from mysql.connector import errorcode
 from datetime import datetime
+from config import username, password
 
 
 currentCoords = None
@@ -11,8 +12,13 @@ app = Flask(__name__)
 @app.route('/fuel', methods=['GET', 'POST'])
 def index(results={}):
     try:
-        #CREATE DATABASE CONNECTION
-        conn = mysql.connector.connect(user='root', password='97551',
+        #CREATE DATABASE CONNECTION DEVELOPER
+        # conn = mysql.connector.connect(user='root', password='97551',
+        #                             host='localhost',
+        #                             database='pickapump')
+
+        #CREATE DATABASE CONNECTION PRODUCTION
+        conn = mysql.connector.connect(user=config.username, password=config.password,
                                     host='localhost',
                                     database='pickapump')
 
@@ -23,9 +29,9 @@ def index(results={}):
             #CREATE MAGICAL CURSOR OBJECT
             cursor = conn.cursor()
             #TELL MYSQL TO USE PICKAPUMP_APP DATABASE
-            cursor.execute("USE pickapump")
+            cursor.execute("USE pickapump_app")
             #USE COORDS TO CHECK IF STATION EXISTS
-            cursor.execute("SELECT * FROM stationname")
+            cursor.execute("SELECT * FROM stations")
             data = cursor.fetchall()
 
             for entries in data:
@@ -126,8 +132,13 @@ def index(results={}):
     }
 
     try:
-        #CREATE DATABASE CONNECTION
-        conn = mysql.connector.connect(user='root', password='97551',
+        #CREATE DATABASE CONNECTION DEVELOPER
+        # conn = mysql.connector.connect(user='root', password='97551',
+        #                             host='localhost',
+        #                             database='pickapump')
+
+        #CREATE DATABASE CONNECTION PRODUCTION
+        conn = mysql.connector.connect(user=config.username, password=config.password,
                                     host='localhost',
                                     database='pickapump')
 
@@ -140,8 +151,8 @@ def index(results={}):
 
             #CREATE FUEL INSERT STRING
             add_fuel = ("INSERT INTO fuel "
-                        "(idstationName, petrolprice, dieselprice, keroprice, dateadded, currency) "
-                        "VALUES (%(idstationName)s, %(petrol)s, %(diesel)s, %(kero)s, %(date)s, %(currency)s);")
+                        "(idstationname, petrolprice, dieselprice, keroprice, currency, dateadded) "
+                        "VALUES (%(idstationName)s, %(petrol)s, %(diesel)s, %(kero)s, %(currency)s, %(date)s,);")
             
             #TELL MYSQL TO USE PICKAPUMP_APP DATABASE
             cursor.execute("USE pickapump")
