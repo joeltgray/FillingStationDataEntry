@@ -19,7 +19,7 @@ def index(results={}):
         #CREATE DATABASE CONNECTION PRODUCTION
         conn = mysql.connector.connect(user=config.username, password=config.password,
                                     host='localhost',
-                                    database='pickapump')
+                                    database='pickapump_app')
 
         #CHECK DATABASE CONNECTION
         if conn.is_connected() == True:
@@ -214,11 +214,11 @@ def station(results={}):
             #CREATE MAGICAL CURSOR OBJECT
             cursor = conn.cursor()
             #CREATE STATION INSERT STRING
-            add_station = ("INSERT INTO stationname "
+            add_station = ("INSERT INTO stations "
                "(stationName, address, postcode, country, coords, telephone) "
                "VALUES (%(stationName)s, %(address)s, %(postcode)s, %(country)s, %(coords)s, %(telephone)s);")
             #TELL MYSQL TO USE PICKAPUMP_APP DATABASE
-            cursor.execute("USE pickapump")
+            cursor.execute("USE pickapump_app")
             #ADD STATION DATA
             print("Adding new station")
             cursor.execute(add_station, station_data)
