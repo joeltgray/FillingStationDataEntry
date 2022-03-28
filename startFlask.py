@@ -252,9 +252,6 @@ def station(results={}):
     print(results)
     return redirect('/fuel')
 
-    
-if __name__ == '__main__':
-   app.run(debug=True, host='0.0.0.0', port=5247)
 
 def send_tweet(fuel_data):
     if fuel_data['currency'] == sterling:
@@ -311,3 +308,7 @@ def send_tweet(fuel_data):
 
     #client = tweepy.Client(bearer_token=bearer_token, access_token=access_token, access_token_secret=access_token_secret, consumer_key=consumer_key, consumer_secret=consumer_secret)
     #client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}{}{}\nTel:{}\n\nShow on Map:{}#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(fuel_data['petrol'],currency,fuel_data['diesel'],currency,))
+
+
+    if __name__ == '__main__':
+   app.run(debug=True, host='0.0.0.0', port=5247)
