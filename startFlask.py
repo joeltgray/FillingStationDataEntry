@@ -97,10 +97,6 @@ def index(results={}):
                                     <option value="euro">Euro</option>
                                 </select>
                                 </div>
-                                <div class="mb-3 form-check">
-                                    <label class="form-check-label" for="image">Image</label>
-                                    <input type="file" class="form-check-input" name="image" id="image">
-                                </div>
                                 <div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
@@ -318,7 +314,7 @@ def send_tweet(fuel_data):
 
     client = tweepy.Client(bearer_token=bearer_token, access_token=access_token, access_token_secret=access_token_secret, consumer_key=consumer_key, consumer_secret=consumer_secret)
     
-    response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}, {}, {}\nTel:0{}\n\nShow on Map:{}\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(fuel_data['petrol'],currency,fuel_data['diesel'],currency,station_data['stationName'],station_data['address'],station_data['postcode'],station_data['country'],str(station_data['telephone'],station_data['maplink'])))
+    response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}, {}, {}\nTel:0{}\n\nShow on Map:{}\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(fuel_data['petrol'],currency,fuel_data['diesel'],currency,station_data['stationName'],station_data['address'],station_data['postcode'],station_data['country'],str(station_data['telephone'],str(station_data['maplink']))))
     print(response)
 
 if __name__ == '__main__':
