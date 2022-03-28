@@ -262,6 +262,7 @@ def send_tweet(fuel_data):
         currency = ''
 
     station_data = {
+    'idstationname': None,
     'stationName': None,
     'address': None,
     'postcode': None,
@@ -290,6 +291,15 @@ def send_tweet(fuel_data):
             cursor.execute("SELECT * FROM stations WHERE idstationname={}".format(fuel_data['idstationName']))
             data = cursor.fetchall()
             print(data)
+            station_data['idstationname']=data[0]
+            station_data['stationName']=data[1]
+            station_data['address']=data[2]
+            station_data['postcode']=data[3]
+            station_data['country']=data[4]
+            station_data['coords']=data[5]
+            station_data['telephone']=data[6]
+            print(station_data)
+
             
             #CLOSE CONNECTIONS
             conn.commit()
@@ -307,7 +317,7 @@ def send_tweet(fuel_data):
         conn.close()
 
     #client = tweepy.Client(bearer_token=bearer_token, access_token=access_token, access_token_secret=access_token_secret, consumer_key=consumer_key, consumer_secret=consumer_secret)
-    #client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}{}{}\nTel:{}\n\nShow on Map:{}#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(fuel_data['petrol'],currency,fuel_data['diesel'],currency,))
+    client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}{}{}\nTel:{}\n\nShow on Map:{}#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(fuel_data['petrol'],currency,fuel_data['diesel'],currency,))
 
 if __name__ == '__main__':
    app.run(debug=True, host='0.0.0.0', port=5247)
