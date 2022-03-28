@@ -169,6 +169,7 @@ def index(results={}):
             conn.close()
 
             send_tweet(fuel_data)
+            os.remove('price.jpg')
         
 
     except mysql.connector.Error as err:
@@ -316,6 +317,14 @@ def send_tweet(fuel_data):
         conn.close()
 
     client = tweepy.Client(bearer_token=bearer_token, access_token=access_token, access_token_secret=access_token_secret, consumer_key=consumer_key, consumer_secret=consumer_secret)
+
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    media_client = tweepy.API(auth)
+    media = media_client.media_upload("price.jpg")
+    print(media)
+    print(media.media_id)
+    
     response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}, {}, {}\nTel:0{}\n\nShow on Map: \n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(fuel_data['petrol'],currency,fuel_data['diesel'],currency,station_data['stationName'],station_data['address'],station_data['postcode'],station_data['country'],str(station_data['telephone'])))
     print(response)
 
