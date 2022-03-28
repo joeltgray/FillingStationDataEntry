@@ -123,8 +123,6 @@ def index(results={}):
     results.update({"kero":request.form["kero"]})  
     results.update({"currency":request.form["currency"]})  
 
-    file = request.files['image']
-    file.save("price.jpg")
     date_added = datetime.now()
 
     fuel_data = {
@@ -169,7 +167,6 @@ def index(results={}):
             conn.close()
 
             send_tweet(fuel_data)
-            os.remove('price.jpg')
         
 
     except mysql.connector.Error as err:
@@ -196,6 +193,7 @@ def station(results={}):
     results.update({"country":request.form["country"]})  
     results.update({"coords":request.form["coords"]}) 
     results.update({"telephone":request.form["telephone"]}) 
+    results.update({"maplink":request.form["maplink"]}) 
 
     station_data = {
     'stationName': results["stationName"],
@@ -204,6 +202,7 @@ def station(results={}):
     'country': results["country"],
     'coords': results["coords"],
     'telephone': results["telephone"],
+    'maplink': results["maplink"],
     }
  
     try:
@@ -224,8 +223,8 @@ def station(results={}):
             cursor = conn.cursor()
             #CREATE STATION INSERT STRING
             add_station = ("INSERT INTO stations "
-               "(stationName, address, postcode, country, coords, telephone) "
-               "VALUES (%(stationName)s, %(address)s, %(postcode)s, %(country)s, %(coords)s, %(telephone)s);")
+               "(stationName, address, postcode, country, coords, telephone, maplink) "
+               "VALUES (%(stationName)s, %(address)s, %(postcode)s, %(country)s, %(coords)s, %(telephone)s, %(maplink)s);")
             #TELL MYSQL TO USE PICKAPUMP_APP DATABASE
             cursor.execute("USE pickapump_app")
             #ADD STATION DATA
@@ -270,6 +269,7 @@ def send_tweet(fuel_data):
     'country': None,
     'coords': None,
     'telephone': None,
+    'maplink': None,
     }
     
     try:
@@ -298,9 +298,9 @@ def send_tweet(fuel_data):
             station_data['country']=data[0][4]
             station_data['coords']=data[0][5]
             station_data['telephone']=data[0][6]
+            station_data['maplink']=data[0][7]
             print(station_data)
 
-            
             #CLOSE CONNECTIONS
             conn.commit()
             cursor.close()  
@@ -317,15 +317,8 @@ def send_tweet(fuel_data):
         conn.close()
 
     client = tweepy.Client(bearer_token=bearer_token, access_token=access_token, access_token_secret=access_token_secret, consumer_key=consumer_key, consumer_secret=consumer_secret)
-
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
-    media_client = tweepy.API(auth)
-    media = media_client.media_upload("price.jpg")
-    print(media)
-    print(media.media_id)
     
-    response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}, {}, {}\nTel:0{}\n\nShow on Map: \n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(fuel_data['petrol'],currency,fuel_data['diesel'],currency,station_data['stationName'],station_data['address'],station_data['postcode'],station_data['country'],str(station_data['telephone'])))
+    response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}, {}, {}\nTel:0{}\n\nShow on Map:{}\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(fuel_data['petrol'],currency,fuel_data['diesel'],currency,station_data['stationName'],station_data['address'],station_data['postcode'],station_data['country'],str(station_data['telephone'],station_data['maplink'])))
     print(response)
 
 if __name__ == '__main__':
