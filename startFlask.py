@@ -139,7 +139,7 @@ def index(results={}):
         #CREATE DATABASE CONNECTION PRODUCTION
         conn = mysql.connector.connect(user=config.username, password=config.password,
                                     host='localhost',
-                                    database='pickapump')
+                                    database='pickapump_app')
 
         #CHECK DATABASE CONNECTION
         if conn.is_connected() == True:
@@ -206,7 +206,7 @@ def station(results={}):
         #CREATE DATABASE CONNECTION PRODUCTION
         conn = mysql.connector.connect(user=config.username, password=config.password,
                                     host='localhost',
-                                    database='pickapump')
+                                    database='pickapump_app')
 
         #CHECK DATABASE CONNECTION
         if conn.is_connected() == True:
