@@ -198,8 +198,13 @@ def station(results={}):
     }
  
     try:
-        #CREATE DATABASE CONNECTION
-        conn = mysql.connector.connect(user='root', password='97551',
+        #CREATE DATABASE CONNECTION DEVELOPER
+        # conn = mysql.connector.connect(user='root', password='97551',
+        #                             host='localhost',
+        #                             database='pickapump')
+
+        #CREATE DATABASE CONNECTION PRODUCTION
+        conn = mysql.connector.connect(user=config.username, password=config.password,
                                     host='localhost',
                                     database='pickapump')
 
