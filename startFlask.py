@@ -291,13 +291,13 @@ def send_tweet(fuel_data):
             cursor.execute("SELECT * FROM stations WHERE idstationname={}".format(fuel_data['idstationName']))
             data = cursor.fetchall()
             print(data)
-            station_data['idstationname']=data[0]
-            station_data['stationName']=data[1]
-            station_data['address']=data[2]
-            station_data['postcode']=data[3]
-            station_data['country']=data[4]
-            station_data['coords']=data[5]
-            station_data['telephone']=data[6]
+            station_data['idstationname']=data[0][0]
+            station_data['stationName']=data[0][1]
+            station_data['address']=data[0][2]
+            station_data['postcode']=data[0][3]
+            station_data['country']=data[0][4]
+            station_data['coords']=data[0][5]
+            station_data['telephone']=data[0][6]
             print(station_data)
 
             
