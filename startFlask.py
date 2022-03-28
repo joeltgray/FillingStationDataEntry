@@ -314,7 +314,7 @@ def send_tweet(fuel_data):
 
     client = tweepy.Client(bearer_token=bearer_token, access_token=access_token, access_token_secret=access_token_secret, consumer_key=consumer_key, consumer_secret=consumer_secret)
     
-    response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}, {}, {}\nTel:0{}\n\nShow on Map:{}\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(fuel_data['petrol'],currency,fuel_data['diesel'],currency,station_data['stationName'],station_data['address'],station_data['postcode'],station_data['country'],str(station_data['telephone'],str(station_data['maplink']))))
+    response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}, {}, {}\nTel:0{}\n\nShow on Map:{}\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(str(fuel_data['petrol']),currency,str(fuel_data['diesel']),currency,station_data['stationName'],station_data['address'],station_data['postcode'],station_data['country'],str(station_data['telephone']),station_data['maplink']))
     print(response)
 
 if __name__ == '__main__':
