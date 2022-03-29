@@ -64,6 +64,7 @@ def index(results={}):
         #CHECK DATABASE CONNECTION
         if conn.is_connected() == True:
             global middle
+            middle = ''
             print("Database Connection Made!")
             #CREATE MAGICAL CURSOR OBJECT
             cursor = conn.cursor()
