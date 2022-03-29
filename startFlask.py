@@ -18,9 +18,6 @@ data = None
 
 app = Flask(__name__)
 
-@app.route('/')
-def root():
-    return redirect('/station')
 
 def check_auth(username, password):
     """This function is called to check if a username /
