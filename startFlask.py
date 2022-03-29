@@ -14,6 +14,7 @@ consumer_secret=config.CONSUMER_SECRET
 
 currentCoords = None
 middle = ''
+data = None
 
 app = Flask(__name__)
 
@@ -47,6 +48,7 @@ def requires_auth(f):
 @app.route('/fuel', methods=['GET', 'POST'])
 @requires_auth
 def index(results={}):
+    global data
     data = None
     try:
         #CREATE DATABASE CONNECTION DEVELOPER
