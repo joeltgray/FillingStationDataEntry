@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, Response
+from functools import wraps
 import mysql.connector
 from mysql.connector import errorcode
 from datetime import datetime
@@ -19,36 +20,34 @@ app = Flask(__name__)
 @app.route('/')
 def root():
     return redirect('/station')
-    
 
-def password_prompt(message):
-    ip_addr = request.remote_addr
-    form = '''  <html lang="en">
-                <head>
-                    <!-- Required meta tags -->
-                    <meta charset="utf-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1">
-                    <!-- Latest compiled and minified CSS -->
-                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    </head>
-                    <!-- Custom CSS -->
-                    <link rel="stylesheet" href="./stylesheet.css">
-                </head>
-                <body>
-                    <form action="/station" method='post'>
-                        <h3>{} </h3>
-                        <p>Your IP address is: {}</p>
-                        <label for="password">Enter the password:</label><br>
-                        <input type="password" id="password" name="password" value=""><br>
-                        <p>Unauthorised IPs will be tracked, saved, reported and dealt with accordingly</p>
-                        <input type="submit" value="Submit">
-                    </form>
-                </body>
-                </html> '''.format(message,ip_addr)
+def check_auth(username, password):
+    """This function is called to check if a username /
+    password combination is valid.
+    """
+    return username == config.USERNAME and password == config.PASSPHRASE
 
-    return form
+def authenticate():
+    """Sends a 401 response that enables basic auth"""
+    return Response(
+    'Could not verify your access level for that URL.\n'
+    'You have to login with proper credentials', 401,
+    {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
+
 
 @app.route('/fuel', methods=['GET', 'POST'])
+@requires_auth
 def index(results={}):
+
     try:
         #CREATE DATABASE CONNECTION DEVELOPER
         # conn = mysql.connector.connect(user='root', password='97551',
@@ -212,14 +211,10 @@ def index(results={}):
 
  
 @app.route('/station', methods=['GET', 'POST'])
+@requires_auth
 def station(results={}):
     if request.method == "GET":
-        return password_prompt("Admin password:")
-    elif request.method == 'POST':
-        if request.form['password'] != config.PASSPHRASE:
-            return password_prompt("Invalid password, try again. Admin password:")
-        else:
-            return render_template("index.html", title='PickAPump Fuel Entry')   
+        return render_template("index.html", title='PickAPump Fuel Entry')   
 
     results.update({"stationName":request.form["stationName"]})
     results.update({"address":request.form["address"]})  
