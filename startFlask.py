@@ -47,7 +47,7 @@ def requires_auth(f):
 @app.route('/fuel', methods=['GET', 'POST'])
 @requires_auth
 def index(results={}):
-
+    data = None
     try:
         #CREATE DATABASE CONNECTION DEVELOPER
         # conn = mysql.connector.connect(user='root', password='97551',
@@ -77,6 +77,8 @@ def index(results={}):
             conn.commit()
             cursor.close()  
             conn.close()
+
+            data = None
         
 
     except mysql.connector.Error as err:
