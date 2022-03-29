@@ -15,6 +15,25 @@ currentCoords = None
 middle = ''
 
 app = Flask(__name__)
+
+@app.route('/')
+def root():
+    return redirect('/station')
+    
+
+def password_prompt(message):
+    ip_addr = request.remote_addr
+    form = '''
+                <form action="/station" method='post'>
+                  <p>Your IP address is: {}</p>
+                  <label for="password">Enter the password:</label><br>
+                  <input type="password" id="password" name="password" value=""><br>
+                  <p>Unauthorised IPs will be tracked, saved, reported and dealt with accordingly</p>
+                  <input type="submit" value="Submit">
+                </form> '''.format(ip_addr)
+
+    return form
+
 @app.route('/fuel', methods=['GET', 'POST'])
 def index(results={}):
     try:
@@ -182,6 +201,11 @@ def index(results={}):
 @app.route('/station', methods=['GET', 'POST'])
 def station(results={}):
     if request.method == "GET":
+        return password_prompt("Admin password:")
+    elif request.method == 'POST':
+        if request.form['password'] != config.PASSPHRASE:
+            return password_prompt("Invalid password, try again. Admin password:")
+    else:
         return render_template("index.html", title='PickAPump Fuel Entry')   
 
     results.update({"stationName":request.form["stationName"]})
