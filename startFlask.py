@@ -23,14 +23,27 @@ def root():
 
 def password_prompt(message):
     ip_addr = request.remote_addr
-    form = '''
-                <form action="/station" method='post'>
-                  <p>Your IP address is: {}</p>
-                  <label for="password">Enter the password:</label><br>
-                  <input type="password" id="password" name="password" value=""><br>
-                  <p>Unauthorised IPs will be tracked, saved, reported and dealt with accordingly</p>
-                  <input type="submit" value="Submit">
-                </form> '''.format(ip_addr)
+    form = '''  <html lang="en">
+                <head>
+                    <!-- Required meta tags -->
+                    <meta charset="utf-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <!-- Latest compiled and minified CSS -->
+                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    </head>
+                    <!-- Custom CSS -->
+                    <link rel="stylesheet" href="stylesheet.css">
+                </head>
+                <body>
+                    <form action="/station" method='post'>
+                        <h3>{} </h3>
+                        <p>Your IP address is: {}</p>
+                        <label for="password">Enter the password:</label><br>
+                        <input type="password" id="password" name="password" value=""><br>
+                        <p>Unauthorised IPs will be tracked, saved, reported and dealt with accordingly</p>
+                        <input type="submit" value="Submit">
+                    </form>
+                </body>
+                </html> '''.format(message,ip_addr)
 
     return form
 
@@ -205,8 +218,8 @@ def station(results={}):
     elif request.method == 'POST':
         if request.form['password'] != config.PASSPHRASE:
             return password_prompt("Invalid password, try again. Admin password:")
-    else:
-        return render_template("index.html", title='PickAPump Fuel Entry')   
+        else:
+            return render_template("index.html", title='PickAPump Fuel Entry')   
 
     results.update({"stationName":request.form["stationName"]})
     results.update({"address":request.form["address"]})  
