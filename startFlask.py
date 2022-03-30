@@ -48,7 +48,10 @@ def requires_auth(f):
 @requires_auth
 def index(results={}):
     global data
+    global middle
     data = None
+    middle = ''
+
     if request.method == "GET":
         try:
             #CREATE DATABASE CONNECTION DEVELOPER
@@ -60,29 +63,22 @@ def index(results={}):
             conn = mysql.connector.connect(user=config.username, password=config.password,
                                         host='localhost',
                                         database='pickapump_app')
+            print("Database Connection Made!")
+            #CREATE MAGICAL CURSOR OBJECT
+            cursor = conn.cursor()
+            #TELL MYSQL TO USE PICKAPUMP_APP DATABASE
+            cursor.execute("USE pickapump_app;")
+            cursor.execute("SELECT * FROM stations;")
+            data = cursor.fetchall()
 
-            #CHECK DATABASE CONNECTION
-            if conn.is_connected() == True:
-                global middle
-                middle = ''
-                print("Database Connection Made!")
-                #CREATE MAGICAL CURSOR OBJECT
-                cursor = conn.cursor()
-                #TELL MYSQL TO USE PICKAPUMP_APP DATABASE
-                cursor.execute("USE pickapump_app;")
-                cursor.execute("SELECT * FROM stations;")
-                data = cursor.fetchall()
+            for entries in data:
+                middle = middle + "<option value=\"{}\"> {} </option> \n".format(entries[0],str(entries))
 
-                for entries in data:
-                    middle = middle + "<option value=\"{}\"> {} </option> \n".format(entries[0],str(entries))
+            #CLOSE CONNECTIONS
+            conn.commit()
+            cursor.close()  
+            conn.close()
 
-                #CLOSE CONNECTIONS
-                conn.commit()
-                cursor.close()  
-                conn.close()
-
-                data = None
-            
 
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
