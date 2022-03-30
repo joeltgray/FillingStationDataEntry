@@ -93,7 +93,7 @@ def index(results={}):
     else:
         conn.close()
 
-    f = open('Paptwitter/templates/fuelForm.html','w')
+    f = open('/srv/http/pickapump.com/PapTwitter/templates/fuelForm.html','w')
     start = """<html lang="en">
                 <head>
                     <!-- Required meta tags -->
