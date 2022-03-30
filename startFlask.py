@@ -93,7 +93,7 @@ def index(results={}):
     else:
         conn.close()
 
-    f = open('/srv/http/pickapump.com/templates/fuelForm.html','w')
+    f = open('templates/fuelForm.html','w')
     start = """<html lang="en">
                 <head>
                     <!-- Required meta tags -->
