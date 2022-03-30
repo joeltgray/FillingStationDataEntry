@@ -68,8 +68,8 @@ def index(results={}):
             #CREATE MAGICAL CURSOR OBJECT
             cursor = conn.cursor()
             #TELL MYSQL TO USE PICKAPUMP_APP DATABASE
-            cursor.execute("USE pickapump_app")
-            cursor.execute("SELECT * FROM stations")
+            cursor.execute("USE pickapump_app;")
+            cursor.execute("SELECT * FROM stations;")
             data = cursor.fetchall()
 
             for entries in data:
