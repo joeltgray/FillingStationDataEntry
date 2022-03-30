@@ -49,103 +49,103 @@ def requires_auth(f):
 def index(results={}):
     global data
     data = None
-    try:
-        #CREATE DATABASE CONNECTION DEVELOPER
-        # conn = mysql.connector.connect(user='root', password='97551',
-        #                             host='localhost',
-        #                             database='pickapump')
+    if request.method == "GET":
+        try:
+            #CREATE DATABASE CONNECTION DEVELOPER
+            # conn = mysql.connector.connect(user='root', password='97551',
+            #                             host='localhost',
+            #                             database='pickapump')
 
-        #CREATE DATABASE CONNECTION PRODUCTION
-        conn = mysql.connector.connect(user=config.username, password=config.password,
-                                    host='localhost',
-                                    database='pickapump_app')
+            #CREATE DATABASE CONNECTION PRODUCTION
+            conn = mysql.connector.connect(user=config.username, password=config.password,
+                                        host='localhost',
+                                        database='pickapump_app')
 
-        #CHECK DATABASE CONNECTION
-        if conn.is_connected() == True:
-            global middle
-            middle = ''
-            print("Database Connection Made!")
-            #CREATE MAGICAL CURSOR OBJECT
-            cursor = conn.cursor()
-            #TELL MYSQL TO USE PICKAPUMP_APP DATABASE
-            cursor.execute("USE pickapump_app;")
-            cursor.execute("SELECT * FROM stations;")
-            data = cursor.fetchall()
+            #CHECK DATABASE CONNECTION
+            if conn.is_connected() == True:
+                global middle
+                middle = ''
+                print("Database Connection Made!")
+                #CREATE MAGICAL CURSOR OBJECT
+                cursor = conn.cursor()
+                #TELL MYSQL TO USE PICKAPUMP_APP DATABASE
+                cursor.execute("USE pickapump_app;")
+                cursor.execute("SELECT * FROM stations;")
+                data = cursor.fetchall()
 
-            for entries in data:
-                middle = middle + "<option value=\"{}\"> {} </option> \n".format(entries[0],str(entries))
+                for entries in data:
+                    middle = middle + "<option value=\"{}\"> {} </option> \n".format(entries[0],str(entries))
 
-            #CLOSE CONNECTIONS
-            conn.commit()
-            cursor.close()  
+                #CLOSE CONNECTIONS
+                conn.commit()
+                cursor.close()  
+                conn.close()
+
+                data = None
+            
+
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Something is wrong with your user name or password")
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+            else:
+                print(err)
+        else:
             conn.close()
 
-            data = None
-        
-
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
-        else:
-            print(err)
-    else:
-        conn.close()
-
-    f = open('/srv/http/pickapump.com/PapTwitter/templates/fuelForm.html','w')
-    start = """<html lang="en">
-                <head>
-                    <!-- Required meta tags -->
-                    <meta charset="utf-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1">
-                    <!-- Latest compiled and minified CSS -->
-                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    </head>
-                    <!-- Custom CSS -->
-                    <link rel="stylesheet" href="static/styles/stylesheet.css">
-                </head>
-                <body>
-                    <div class="basicFormat">
-                        <form method="post" enctype="multipart/form-data">
-                            <div class="mb-3">
-                            <label class="form-check-label" for="station">Choose Station</label>
-                                <select class="form-check-input" name="station" id="station"> """
-
-    finish = """                </select>
-                                </div>
+        f = open('/srv/http/pickapump.com/PapTwitter/templates/fuelForm.html','w')
+        start = """<html lang="en">
+                    <head>
+                        <!-- Required meta tags -->
+                        <meta charset="utf-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1">
+                        <!-- Latest compiled and minified CSS -->
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    </head>
+                        <!-- Custom CSS -->
+                        <link rel="stylesheet" href="static/styles/stylesheet.css">
+                    </head>
+                    <body>
+                        <div class="basicFormat">
+                            <form method="post" enctype="multipart/form-data">
                                 <div class="mb-3">
-                                <label for="petrol" class="form-label">Petrol</label>
-                                <input type="number" step="0.1"class="form-control" name="petrol" id="petrol">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="diesel" class="form-label">Diesel</label>
-                                    <input type="number" step="0.1" class="form-control" name="diesel" id="diesel">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="kero" class="form-label">Kero</label>
-                                    <input type="number" step="0.1" class="form-control" name="kero" id="kero">
-                                </div>
-                                <div class="mb-3 form-check">
-                                <label class="form-check-label" for="sterling">Choose Currency</label>
-                                <select class="form-check-input" name="currency" id="currency">
-                                    <option value="sterling">Sterling</option>
-                                    <option value="euro">Euro</option>
-                                </select>
-                                </div>
-                                <div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-                    </body>
-                </html>"""
+                                <label class="form-check-label" for="station">Choose Station</label>
+                                    <select class="form-check-input" name="station" id="station"> """
 
-    all = start + middle + finish
-    f.write(all)
-    f.close()
+        finish = """                </select>
+                                    </div>
+                                    <div class="mb-3">
+                                    <label for="petrol" class="form-label">Petrol</label>
+                                    <input type="number" step="0.1"class="form-control" name="petrol" id="petrol">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="diesel" class="form-label">Diesel</label>
+                                        <input type="number" step="0.1" class="form-control" name="diesel" id="diesel">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="kero" class="form-label">Kero</label>
+                                        <input type="number" step="0.1" class="form-control" name="kero" id="kero">
+                                    </div>
+                                    <div class="mb-3 form-check">
+                                    <label class="form-check-label" for="sterling">Choose Currency</label>
+                                    <select class="form-check-input" name="currency" id="currency">
+                                        <option value="sterling">Sterling</option>
+                                        <option value="euro">Euro</option>
+                                    </select>
+                                    </div>
+                                    <div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+                        </body>
+                    </html>"""
 
-    if request.method == "GET":
+        all = start + middle + finish
+        f.write(all)
+        f.close()
+
         return render_template("fuelForm.html", title='PickAPump Fuel Entry') 
 
     results.update({"station":request.form["station"]})  
