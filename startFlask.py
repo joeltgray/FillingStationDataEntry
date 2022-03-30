@@ -146,7 +146,7 @@ def index(results={}):
     f.close()
 
     if request.method == "GET":
-        return render_template("fuelForm.html", title='PickAPump Fuel Entry') 
+        return render_template("templates/fuelForm.html", title='PickAPump Fuel Entry') 
 
     results.update({"station":request.form["station"]})  
     results.update({"petrol":request.form["petrol"]})  
@@ -218,7 +218,7 @@ def index(results={}):
 @requires_auth
 def station(results={}):
     if request.method == "GET":
-        return render_template("index.html", title='PickAPump Fuel Entry')   
+        return render_template("templates/index.html", title='PickAPump Fuel Entry')   
 
     results.update({"stationName":request.form["stationName"]})
     results.update({"address":request.form["address"]})  
