@@ -219,8 +219,7 @@ def index(results={}):
 @requires_auth
 def station(results={}):
     if request.method == "GET":
-        indexPage = templatePath + "index.html"
-        return render_template(indexPage, title='PickAPump Fuel Entry')   
+        return render_template("/templates/index.html", title='PickAPump Fuel Entry')   
 
     results.update({"stationName":request.form["stationName"]})
     results.update({"address":request.form["address"]})  
