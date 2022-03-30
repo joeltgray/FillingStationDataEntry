@@ -90,7 +90,7 @@ def index(results={}):
     else:
         conn.close()
 
-    f = open('./templates/fuelForm.html','w')
+    f = open('/srv/http/pickapump.com/templates/fuelForm.html','w')
     start = """<html lang="en">
                 <head>
                     <!-- Required meta tags -->
@@ -143,7 +143,7 @@ def index(results={}):
     f.close()
 
     if request.method == "GET":
-        return render_template("fuelForm.html", title='PickAPump Fuel Entry') 
+        return render_template("/srv/http/pickapump.com/templates/fuelForm.html", title='PickAPump Fuel Entry') 
 
     results.update({"station":request.form["station"]})  
     results.update({"petrol":request.form["petrol"]})  
@@ -353,4 +353,4 @@ def send_tweet(fuel_data):
     return response
 
 if __name__ == '__main__':
-   app.run(debug=True, host='0.0.0.0', port=5247)
+   app.run(host='0.0.0.0', port=5247)
