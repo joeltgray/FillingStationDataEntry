@@ -43,6 +43,9 @@ def requires_auth(f):
         return f(*args, **kwargs)
     return decorated
 
+@app.route('/map', methods=['GET', 'POST'])
+def mapPage():
+    return render_template("map.html", title='PickAPump Map') 
 
 @app.route('/fuel', methods=['GET', 'POST'])
 @requires_auth
@@ -96,6 +99,7 @@ def index(results={}):
                         <!-- Required meta tags -->
                         <meta charset="utf-8">
                         <meta name="viewport" content="width=device-width, initial-scale=1">
+                        <link rel="icon" href="./static/favicon.ico"/>
                         <!-- Latest compiled and minified CSS -->
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    </head>
                         <!-- Custom CSS -->
