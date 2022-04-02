@@ -361,4 +361,4 @@ def send_tweet(fuel_data):
     return response
 
 if __name__ == '__main__':
-   app.run(host='0.0.0.0', port=5247, ssl_context='adhoc', TEMPLATES)
+   app.run(host='0.0.0.0', port=5247, ssl_context='adhoc')
