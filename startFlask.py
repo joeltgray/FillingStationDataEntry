@@ -20,6 +20,8 @@ middle = ''
 data = None
 
 app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
 
 def check_auth(username, password):
     """This function is called to check if a username /
@@ -73,8 +75,10 @@ def index(results={}):
             cursor.execute("USE pickapump_app;")
             cursor.execute("SELECT * FROM stations;")
             data = cursor.fetchall()
+            print(data)
 
             for entries in data:
+                print(entries)
                 middle = middle + "<option value=\"{}\"> {} </option> \n".format(entries[0],str(entries))
 
             #CLOSE CONNECTIONS
@@ -99,7 +103,7 @@ def index(results={}):
                         <!-- Required meta tags -->
                         <meta charset="utf-8">
                         <meta name="viewport" content="width=device-width, initial-scale=1">
-                        <link rel="icon" href="./static/favicon.ico"/>
+                        <link rel="icon" href="../static/favicon.ico"/>
                         <!-- Latest compiled and minified CSS -->
                         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    </head>
                         <!-- Custom CSS -->
@@ -110,9 +114,10 @@ def index(results={}):
                             <form method="post" enctype="multipart/form-data">
                                 <div class="mb-3">
                                 <label class="form-check-label" for="station">Choose Station</label>
-                                    <select class="form-check-input" name="station" id="station"> """
+                                    <select class="form-check-input" name="station" id="station">"""
 
-        finish = """                </select>
+        finish = """                
+                                    </select>
                                     </div>
                                     <div class="mb-3">
                                     <label for="petrol" class="form-label">Petrol</label>
@@ -356,4 +361,4 @@ def send_tweet(fuel_data):
     return response
 
 if __name__ == '__main__':
-   app.run(host='0.0.0.0', port=5247, ssl_context='adhoc')
+   app.run(host='0.0.0.0', port=5247, ssl_context='adhoc', TEMPLATES)
