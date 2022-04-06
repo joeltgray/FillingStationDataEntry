@@ -22,10 +22,7 @@ function locate(){
           lng: position.coords.longitude,
         }
       })
-      map = new google.maps.Map(document.getElementById("map"), {
-        center: pos,
-        zoom: 10,
-      });
+      map.center(pos);
   } else {
     console.log("couldnt locate person")
     }
