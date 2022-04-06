@@ -129,7 +129,15 @@ def index(results={}):
                                     </div>
                                     <div class="mb-3">
                                         <label for="kero" class="form-label">Kero</label>
-                                        <input type="number" step="0.1" class="form-control" name="kero" id="kero">
+                                        <input type="number" value="0" step="0.1" class="form-control" name="kero" id="kero">
+                                    </div>
+                                    <div class="mb-3">
+                                    <label for="petrolplus" class="form-label">Petrol Plus</label>
+                                    <input type="number" value="0" step="0.1"class="form-control" name="petrolplus" id="petrolplus">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="dieselplus" class="form-label">Diesel Plus</label>
+                                        <input type="number" value="0" step="0.1" class="form-control" name="dieselplus" id="dieselplus">
                                     </div>
                                     <div class="mb-3 form-check">
                                     <label class="form-check-label" for="sterling">Choose Currency</label>
