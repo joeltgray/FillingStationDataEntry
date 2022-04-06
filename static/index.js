@@ -5,10 +5,19 @@
 let map, pos;
 
 function initMap() {
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: 54.607868, lng: -5.926437 },
+    zoom: 6,
+  })
+
+  locate();
+};
+
+function locate(){
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const pos = {
+        pos = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         }
@@ -18,11 +27,8 @@ function initMap() {
         zoom: 10,
       });
   } else {
-        map = new google.maps.Map(document.getElementById("map"), {
-          center: { lat: 54.607868, lng: -5.926437 },
-          zoom: 6,
-          }
-        )
-      }
+    console.log("couldnt locate person")
+    }
+};
 
-}
+
