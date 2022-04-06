@@ -16,6 +16,14 @@ function initMap() {
   })
 
   locate();
+  const image = "./static/Spar109.png"
+  new google.maps.Marker({
+    position: {lat: 54.0873734, lng: -6.26058},
+    map,
+    title: "Omeath Fuels",
+    icon: image,
+    label: { color: '#00aaff', fontWeight: 'bold', float: 'right', fontSize: '14px', text: 'Petrol: 154.9p' }
+  });
 };
 
 function locate(){
