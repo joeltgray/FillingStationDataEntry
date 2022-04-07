@@ -375,19 +375,19 @@ def send_tweet(fuel_data):
         conn.close()
 
     client = tweepy.Client(bearer_token=bearer_token, access_token=access_token, access_token_secret=access_token_secret, consumer_key=consumer_key, consumer_secret=consumer_secret)
-    if fuel_data['petrol'] > 0 and fuel_data['diesel'] > 0 and fuel_data['kero'] > 0 and fuel_data['petrolplus'] > 0 and fuel_data['dieselplus'] > 0:
+    if float(fuel_data['petrol']) > 0 and float(fuel_data['diesel']) > 0 and float(fuel_data['kero']) > 0 and float(fuel_data['petrolplus']) > 0 and float(fuel_data['dieselplus']) > 0:
         response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\nPetrol+: {}{}\nDiesel+: {}{}\nKero: {}{}\n\n{}\n{}, {}, {}, {}, {}\nTel:{}\n\nShow on Map:{}\n\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(str(fuel_data['petrol']),currency,str(fuel_data['diesel']),currency, str(fuel_data['petrolplus']),currency,str(fuel_data['dieselplus']),currency,str(fuel_data['kero']),currency,station_data['stationName'],station_data['address'],station_data['town'],station_data['county'],station_data['postcode'],station_data['country'],str(station_data['telephone']),station_data['maplink']))
         return response
-    elif fuel_data['petrol'] > 0 and fuel_data['diesel'] > 0 and fuel_data['petrolplus'] > 0 and fuel_data['dieselplus'] > 0:
+    elif float(fuel_data['petrol']) > 0 and float(fuel_data['diesel']) > 0 and float(fuel_data['petrolplus']) > 0 and float(fuel_data['dieselplus']) > 0:
         response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\nPetrol+: {}{}\nDiesel+: {}{}\n\n{}\n{}, {}, {}, {}, {}\nTel:{}\n\nShow on Map:{}\n\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(str(fuel_data['petrol']),currency,str(fuel_data['diesel']),currency, str(fuel_data['petrolplus']),currency,str(fuel_data['dieselplus']),currency,station_data['stationName'],station_data['address'],station_data['town'],station_data['county'],station_data['postcode'],station_data['country'],str(station_data['telephone']),station_data['maplink']))
         return response
-    elif fuel_data['petrol'] > 0 and fuel_data['diesel'] > 0 and fuel_data['kero'] > 0:
+    elif float(fuel_data['petrol']) > 0 and float(fuel_data['diesel']) > 0 and float(fuel_data['kero']) > 0:
         response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\nKero: {}{}\n\n{}\n{}, {}, {}, {}, {}\nTel:{}\n\nShow on Map:{}\n\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(str(fuel_data['petrol']),currency,str(fuel_data['diesel']),currency, str(fuel_data['kero']), currency, station_data['stationName'],station_data['address'],station_data['town'],station_data['county'],station_data['postcode'],station_data['country'],str(station_data['telephone']),station_data['maplink']))
         return response
-    elif fuel_data['petrol'] > 0 and fuel_data['diesel'] > 0:
+    elif float(fuel_data['petrol']) > 0 and float(fuel_data['diesel']) > 0:
         response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}, {}, {}, {}, {}\nTel:{}\n\nShow on Map:{}\n\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(str(fuel_data['petrol']),currency,str(fuel_data['diesel']),currency,station_data['stationName'],station_data['address'],station_data['town'],station_data['county'],station_data['postcode'],station_data['country'],str(station_data['telephone']),station_data['maplink']))
         return response
-    elif fuel_data['diesel'] > 0:
+    elif float(fuel_data['diesel']) > 0:
         response = client.create_tweet(text="Diesel: {}{}\n\n{}\n{}, {}, {}, {}, {}\nTel:{}\n\nShow on Map:{}\n\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(str(fuel_data['diesel']),currency,station_data['stationName'],station_data['address'],station_data['town'],station_data['county'],station_data['postcode'],station_data['country'],str(station_data['telephone']),station_data['maplink']))
         return response
 
