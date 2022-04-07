@@ -165,6 +165,8 @@ def index(results={}):
     results.update({"petrol":request.form["petrol"]})  
     results.update({"diesel":request.form["diesel"]})  
     results.update({"kero":request.form["kero"]})  
+    results.update({"petrolplus":request.form["petrolplus"]})  
+    results.update({"dieselplus":request.form["dieselplus"]})  
     results.update({"currency":request.form["currency"]})  
 
     date_added = datetime.now()
@@ -174,6 +176,8 @@ def index(results={}):
     'petrol': results["petrol"],
     'diesel': results["diesel"],
     'kero': results["kero"],
+    'petrolplus': results["petrolplus"],
+    'dieselplus': results["dieselplus"],
     'date': date_added,
     'currency': results["currency"],
     }
@@ -198,8 +202,8 @@ def index(results={}):
 
             #CREATE FUEL INSERT STRING
             add_fuel = ("INSERT INTO fuel "
-                        "(idstationname, petrolprice, dieselprice, keroprice, currency, dateadded) "
-                        "VALUES (%(idstationName)s, %(petrol)s, %(diesel)s, %(kero)s, %(currency)s, %(date)s);")
+                        "(idstationname, petrolprice, dieselprice, keroprice, petrolplusprice, dieselplusprice, currency, dateadded) "
+                        "VALUES (%(idstationName)s, %(petrol)s, %(diesel)s, %(kero)s, %(petrolplus)s, %(dieselplus)s, %(currency)s, %(date)s);")
             
             #TELL MYSQL TO USE PICKAPUMP_APP DATABASE
             cursor.execute("USE pickapump_app")
@@ -371,10 +375,21 @@ def send_tweet(fuel_data):
         conn.close()
 
     client = tweepy.Client(bearer_token=bearer_token, access_token=access_token, access_token_secret=access_token_secret, consumer_key=consumer_key, consumer_secret=consumer_secret)
-    
-    response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}, {}, {}, {}, {}\nTel:{}\n\nShow on Map:{}\n\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(str(fuel_data['petrol']),currency,str(fuel_data['diesel']),currency,station_data['stationName'],station_data['address'],station_data['town'],station_data['county'],station_data['postcode'],station_data['country'],str(station_data['telephone']),station_data['maplink']))
-
-    return response
+    if fuel_data['petrol'] > 0 and fuel_data['diesel'] > 0 and fuel_data['kero'] > 0 and fuel_data['petrolplus'] > 0 and fuel_data['dieselplus'] > 0:
+        response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\nPetrol+: {}{}\nDiesel+: {}{}\nKero: {}{}\n\n{}\n{}, {}, {}, {}, {}\nTel:{}\n\nShow on Map:{}\n\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(str(fuel_data['petrol']),currency,str(fuel_data['diesel']),currency, str(fuel_data['petrolplus']),currency,str(fuel_data['dieselplus']),currency,str(fuel_data['kero']),currency,station_data['stationName'],station_data['address'],station_data['town'],station_data['county'],station_data['postcode'],station_data['country'],str(station_data['telephone']),station_data['maplink']))
+        return response
+    elif fuel_data['petrol'] > 0 and fuel_data['diesel'] > 0 and fuel_data['petrolplus'] > 0 and fuel_data['dieselplus'] > 0:
+        response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\nPetrol+: {}{}\nDiesel+: {}{}\n\n{}\n{}, {}, {}, {}, {}\nTel:{}\n\nShow on Map:{}\n\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(str(fuel_data['petrol']),currency,str(fuel_data['diesel']),currency, str(fuel_data['petrolplus']),currency,str(fuel_data['dieselplus']),currency,station_data['stationName'],station_data['address'],station_data['town'],station_data['county'],station_data['postcode'],station_data['country'],str(station_data['telephone']),station_data['maplink']))
+        return response
+    elif fuel_data['petrol'] > 0 and fuel_data['diesel'] > 0 and fuel_data['kero'] > 0:
+        response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\nKero: {}{}\n\n{}\n{}, {}, {}, {}, {}\nTel:{}\n\nShow on Map:{}\n\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(str(fuel_data['petrol']),currency,str(fuel_data['diesel']),currency, str(fuel_data['kero']), currency, station_data['stationName'],station_data['address'],station_data['town'],station_data['county'],station_data['postcode'],station_data['country'],str(station_data['telephone']),station_data['maplink']))
+        return response
+    elif fuel_data['petrol'] > 0 and fuel_data['diesel'] > 0:
+        response = client.create_tweet(text="Petrol: {}{}\nDiesel: {}{}\n\n{}\n{}, {}, {}, {}, {}\nTel:{}\n\nShow on Map:{}\n\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(str(fuel_data['petrol']),currency,str(fuel_data['diesel']),currency,station_data['stationName'],station_data['address'],station_data['town'],station_data['county'],station_data['postcode'],station_data['country'],str(station_data['telephone']),station_data['maplink']))
+        return response
+    elif fuel_data['diesel'] > 0:
+        response = client.create_tweet(text="Diesel: {}{}\n\n{}\n{}, {}, {}, {}, {}\nTel:{}\n\nShow on Map:{}\n\n#PetrolPrice #DieselPrice #FuelPrice #PickaPump #Ireland #NorthernIreland #FuelPricesIreland #FuelPricesUK".format(str(fuel_data['diesel']),currency,station_data['stationName'],station_data['address'],station_data['town'],station_data['county'],station_data['postcode'],station_data['country'],str(station_data['telephone']),station_data['maplink']))
+        return response
 
 if __name__ == '__main__':
    app.run(host='0.0.0.0', port=5247, ssl_context='adhoc')
