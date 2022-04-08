@@ -66,6 +66,8 @@ def mapPage():
             for id in stationIds:
                 print(id)
 
+            # cursor.execute("SELECT idstationname FROM stations;")
+            # stationIds = cursor.fetchall()
             #CLOSE CONNECTIONS
             conn.commit()
             cursor.close()  
