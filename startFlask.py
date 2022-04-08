@@ -47,7 +47,8 @@ def requires_auth(f):
 
 @app.route('/map', methods=['GET', 'POST'])
 def mapPage():
-    map_data = None
+    global stationIds
+    global map_data
 
     if request.method == "GET":
         try:
@@ -80,7 +81,7 @@ def mapPage():
                 print(err)
         else:
             conn.close()
-
+    map_data = stationIds
     return render_template("map.html", data=map_data, title='PickAPump Map') 
 
 @app.route('/fuel', methods=['GET', 'POST'])
