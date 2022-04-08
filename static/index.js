@@ -7,6 +7,10 @@ let lat;
 let lng;
 let pos;
 
+function myVars(vars) {
+  console.log(vars)
+  return vars
+}
 
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {

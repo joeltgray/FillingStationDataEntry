@@ -47,7 +47,41 @@ def requires_auth(f):
 
 @app.route('/map', methods=['GET', 'POST'])
 def mapPage():
-    return render_template("map.html", title='PickAPump Map') 
+    map_data = None
+
+    if request.method == "GET":
+        try:
+            #CREATE DATABASE CONNECTION PRODUCTION
+            conn = mysql.connector.connect(user=config.username, password=config.password,
+                                        host='localhost',
+                                        database='pickapump_app')
+            print("Database Connection Made!")
+            cursor = conn.cursor()
+            cursor.execute("USE pickapump_app;")
+            cursor.execute("SELECT idstationname FROM stations;")
+            stationIds = cursor.fetchall()
+            print(stationIds)
+
+            for id in stationIds:
+                print(id)
+
+            #CLOSE CONNECTIONS
+            conn.commit()
+            cursor.close()  
+            conn.close()
+
+
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Something is wrong with your user name or password")
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+            else:
+                print(err)
+        else:
+            conn.close()
+
+    return render_template("map.html", data=map_data, title='PickAPump Map') 
 
 @app.route('/fuel', methods=['GET', 'POST'])
 @requires_auth
