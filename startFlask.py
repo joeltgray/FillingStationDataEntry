@@ -65,7 +65,6 @@ def mapPage():
             map_data  = {}
 
             for id in stationIds:
-                global map_data
                 
                 command = "SELECT * FROM stations WHERE idstationname={};".format(id)
                 cursor.execute(command)
