@@ -26,7 +26,7 @@ function initMap() {
     map,
     title: "Omeath Fuels",
     icon: image,
-    label: { color: '#00aaff', fontWeight: 'bold', float: 'right', fontSize: '14px', text: 'Petrol: 154.9p' }
+    label: { color: 'white', fontWeight: 'bold',  fontSize: '20px', text: 'Petrol: 154.9p' }
   });
 };
 
