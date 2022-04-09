@@ -81,7 +81,7 @@ def mapPage():
                 station_data['maplink']=data[0][9]
                 map_data[id] = station_data
 
-            f = open("./log.txt", 'w')
+            f = open("log.txt", 'w')
             f.write(map_data)
             f.close()
             print(map_data)
