@@ -96,7 +96,7 @@ def mapPage():
                 print(err)
         else:
             conn.close()
-    map_data = stationIds
+            
     return render_template("map.html", data=map_data, title='PickAPump Map') 
 
 @app.route('/fuel', methods=['GET', 'POST'])
