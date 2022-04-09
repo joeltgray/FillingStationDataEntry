@@ -48,8 +48,6 @@ def requires_auth(f):
 @app.route('/map', methods=['GET', 'POST'])
 def mapPage():
     global stationIds
-    global map_data
-    map_data  = {}
 
     if request.method == "GET":
         try:
@@ -63,8 +61,12 @@ def mapPage():
             cursor.execute("SELECT idstationname FROM stations;")
             stationIds = cursor.fetchall()
             print(stationIds)
+            global map_data
+            map_data  = {}
 
             for id in stationIds:
+                global map_data
+                
                 command = "SELECT * FROM stations WHERE idstationname={};".format(id)
                 cursor.execute(command)
                 data = data + cursor.fetchall()
