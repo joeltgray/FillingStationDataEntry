@@ -49,6 +49,7 @@ def requires_auth(f):
 def mapPage():
     global stationIds
     global map_data
+    map_data  = {}
 
     if request.method == "GET":
         try:
@@ -64,10 +65,22 @@ def mapPage():
             print(stationIds)
 
             for id in stationIds:
-                print(id)
+                command = "SELECT * FROM stations WHERE idstationname={};".format(id)
+                cursor.execute(command)
+                data = data + cursor.fetchall()
+                station_data = {}
+                station_data['stationName']=data[0][1]
+                station_data['address']=data[0][2]
+                station_data['town']=data[0][3]
+                station_data['county']=data[0][4]
+                station_data['postcode']=data[0][5]
+                station_data['country']=data[0][6]
+                station_data['coords']=data[0][7]
+                station_data['telephone']=data[0][8]
+                station_data['maplink']=data[0][9]
+                map_data[id] = station_data
 
-            # cursor.execute("SELECT idstationname FROM stations;")
-            # stationIds = cursor.fetchall()
+            
             #CLOSE CONNECTIONS
             conn.commit()
             cursor.close()  
