@@ -81,6 +81,7 @@ def mapPage():
                 map_data[id] = station_data
 
             
+            print(map_data)
             #CLOSE CONNECTIONS
             conn.commit()
             cursor.close()  
@@ -96,7 +97,7 @@ def mapPage():
                 print(err)
         else:
             conn.close()
-            
+
     return render_template("map.html", data=map_data, title='PickAPump Map') 
 
 @app.route('/fuel', methods=['GET', 'POST'])
