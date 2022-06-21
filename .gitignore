@@ -1,5 +1,4 @@
-/price.jpg
-/templates/fuelForm.html
-/cert.pem
-/key.pem
-/__pycache__
+templates/fuelForm.html
+cert.pem
+key.pem
+__pycache__/

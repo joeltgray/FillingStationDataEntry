@@ -2,3 +2,4 @@ requests==2.27.1
 Flask==2.0.3
 mysql-connector-python==8.0.28
 tweepy==4.6.0
+pyOpenSSL==22.0.0
