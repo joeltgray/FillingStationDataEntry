@@ -2,3 +2,4 @@
 /templates/fuelForm.html
 /cert.pem
 /key.pem
+/__pycache__
