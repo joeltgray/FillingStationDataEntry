@@ -1,4 +1,8 @@
-Installing PapTwitter
+This is a program designed to facilitate the entry of fuel filling station data into a mySQL DB at $Port/stations, and also then allow the user to select the newly added station and add fuel prices at $port/fuel.
+
+This likely will not be useful for other people for the most part, but I'm open to conversations and suggestions.
+
+Deploying PapTwitter:
 
 Must have: 
 Python 3.10.2 installed
